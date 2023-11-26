@@ -117,7 +117,7 @@ window.orderedData = [
     Sharing stories to connect, educate, or influence is a passion of mine.	Storytellers	1
     I believe in the transformative power of a well-told tale.	Storytellers	1
     I often use storytelling as a tool for change, advocacy, or simply to bring joy.	Storytellers	1
-    I often lose the audience's interest, when conveyibf messages through stories.	Storytellers	-1
+    I often lose the audience's interest, when conveying messages through stories.	Storytellers	-1
     I can often see potentials and futures that others might not imagine.	Visionaries	1
     I'm driven by a deep sense of purpose and a desire to innovate.	Visionaries	1
     I inspire others to dream bigger and push boundaries.	Visionaries	1
