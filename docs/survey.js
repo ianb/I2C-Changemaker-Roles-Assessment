@@ -51,6 +51,7 @@ function setupQuiz() {
     const clone = template.content.cloneNode(true);
     const questionText = clone.querySelector(".template-question");
     const inputs = clone.querySelectorAll("input");
+    clone.querySelector(".template-number").textContent = (i + 1).toString();
     inputs.forEach((input) => {
       input.setAttribute("data-role", question.role);
       input.setAttribute("data-dir", question.dir);
@@ -73,6 +74,10 @@ function setupQuiz() {
     questionText.textContent = question.descriptor;
     questions.appendChild(clone);
   });
+
+  for (const el of document.querySelectorAll(".question-count")) {
+    el.textContent = sourceData.length;
+  }
 
   submit.addEventListener("click", () => {
     const answers = document.querySelectorAll("input:checked");

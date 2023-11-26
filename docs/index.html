@@ -417,6 +417,10 @@
 
     <div id="question-container" class="mx-auto max-w-xl" style="display: none">
 
+      <div class="mb-6">
+        This is an intro. There are <strong class="question-count">N</strong> items in the survey.
+      </div>
+
       <ol id="questions">
 
       </ol>
@@ -441,6 +445,7 @@
   <template id="question-template">
     <li class="mb-8">
       <div class="mb-2">
+        <strong class="template-number"></strong>.
         <strong class="template-question"></strong>
       </div>
       <div class="flex">
