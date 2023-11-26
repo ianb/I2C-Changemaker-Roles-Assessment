@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "name": "inspire-to-change-survey",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "tailwindcss -i ./input-style.css -o ./docs/style.css",
+    "build-watch": "tailwindcss -i ./input-style.css -o ./docs/style.css --watch"
+  },
+  "eslintConfig": {
+    "ignorePatterns": [
+      "build/"
+    ]
+  },
+  "dependencies": {
+    "tailwindcss": "^3.3.5"
+  }
+}
