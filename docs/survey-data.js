@@ -124,7 +124,7 @@ window.orderedData = [
     I am able to articulate my ideas for the future in a way that others find compelling and trustworthy.	Visionaries	1
     I prefer to focus on the present rather than envisioning new possibilities.	Visionaries	-1
     I have a talent for seeing connections and bringing diverse elements into a cohesive whole.	Weavers	1
-    My goal is always to create a tapestry of shared understanding and mutual respect.	Weavers	1
+    My goal is to create a tapestry of shared understanding and mutual respect.	Weavers	1
     I enjoy finding and creating synergies between different groups and perspectives.	Weavers	1
     I am committed to strengthening the social fabric through inclusive and cohesive practices.	Weavers	1
     I'm more of a solo player and don't prioritize building community.	Weavers	-1
