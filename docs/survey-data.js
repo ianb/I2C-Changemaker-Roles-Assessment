@@ -44,7 +44,7 @@ window.orderedData = [
     My enthusiasm is infectious and has a tendency to mobilize people around me.	Catalysts	1
     Sometimes the barriers are so great that change is not possible.	Catalysts	-1
     I am constantly generating new ideas and concepts that have never been tried before.	Creators	1
-    I feel a strong urge to express myself through artistic	Creators	1
+    I feel a strong urge to express myself through artistic means	Creators	1
     I feel most alive when I'm crafting, designing, or making something from scratch.	Creators	1
     I tend to get restless if I'm not working on a creative project or endeavor.	Creators	1
     I struggle to understand the purpose of artistic and creative projects in social change.	Creators	-1
