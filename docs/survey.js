@@ -8,6 +8,7 @@ const orderedDatas = window.orderedData;
 const origQuestions = orderedDatas[0].questions;
 const sourceData = Array.from(origQuestions);
 const sourceVersion = orderedDatas[0].version;
+const numberOfOptions = 6;
 for (let i = sourceData.length - 1; i > 0; i--) {
   const j = Math.floor(Math.random() * (i + 1));
   [sourceData[i], sourceData[j]] = [sourceData[j], sourceData[i]];
@@ -37,9 +38,10 @@ function setupQuiz() {
       const names = new Set(Array.from(inputs).map((input) => input.name));
       names.forEach((name) => {
         const inputs = document.querySelectorAll(`input[name="${name}"]`);
-        const value = Math.floor(Math.random() * 5) + 1;
+        const value = Math.floor(Math.random() * numberOfOptions) + 1;
         inputs.forEach((input) => {
           input.checked = parseInt(input.value, 10) === value;
+          input.dispatchEvent(new Event("change"));
         });
       });
     }
@@ -53,6 +55,20 @@ function setupQuiz() {
       input.setAttribute("data-role", question.role);
       input.setAttribute("data-dir", question.dir);
       input.setAttribute("name", `question-${i}`);
+      input.addEventListener("change", (event) => {
+        const name = event.target.name;
+        const inputs = document.querySelectorAll(`input[name="${name}"]`);
+        inputs.forEach((input) => {
+          const label = input.parentNode;
+          if (input.checked) {
+            label.classList.add("bg-gray-200");
+            label.classList.remove("opacity-70");
+          } else {
+            label.classList.add("opacity-70");
+            label.classList.remove("bg-gray-200");
+          }
+        });
+      });
     });
     questionText.textContent = question.descriptor;
     questions.appendChild(clone);
@@ -73,14 +89,14 @@ function setupQuiz() {
       if (!results[answer.role]) {
         results[answer.role] = 0;
       }
-      const score = answer.dir === -1 ? 6 - answer.score : answer.score;
+      const score = answer.dir === -1 ? numberOfOptions - answer.score : answer.score - 1;
       results[answer.role] += score;
       roleCounts[answer.role] = (roleCounts[answer.role] || 0) + 1;
     });
     const summarizedResults = Object.keys(results).map((role) => {
       return {
         role,
-        score: ((results[role] / roleCounts[role]) - 1) * 25,
+        score: (results[role] / roleCounts[role]) * (100 / (numberOfOptions - 1)),
       };
     });
     const encoded = encodeSummary(summarizedResults);
