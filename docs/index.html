@@ -10,7 +10,7 @@
 <body>
 
   <div>
-    <svg preserveAspectRatio="xMidYMid meet" data-bbox="116.61 15.02 1734.25 471.424" viewBox="0 0 2000 500"
+    <svg width="300" preserveAspectRatio="xMidYMid meet" data-bbox="116.61 15.02 1734.25 471.424" viewBox="0 0 2000 500"
       xmlns="http://www.w3.org/2000/svg" data-type="ugc" role="presentation" aria-hidden="true" aria-label="">
       <g>
         <path
@@ -402,7 +402,73 @@
     </svg>
   </div>
 
-  <div>An assessment goes here</div>
+  <div class="mx-auto max-w-xl">
+    <div id="question-container">
+
+      <ol id="questions">
+
+      </ol>
+
+      <div style="text-align: center">
+        <button id="submit"
+          style="background-color: #3498db; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; transition: background-color 0.3s;">Done</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="results" style="display: none">
+
+    <div class="mx-auto max-w-xl">
+      <div id="result-holder"></div>
+    </div>
+
+  </div>
+
+  <template id="question-template">
+    <li style="margin-bottom: 1em; font-family: 'Open Sans', sans-serif;">
+      <div style="margin-bottom: 3px">
+        <strong class="template-question"></strong>
+      </div>
+      <div>
+        <label>
+          <input type="radio" name="" value="1" />
+          <span>Strongly Disagree</span>
+        </label>
+        <label>
+          <input type="radio" name="" value="2" />
+          <span>Disagree</span>
+        </label>
+        <label>
+          <input type="radio" name="" value="3" />
+          <span>Neither Agree Nor Disagree</span>
+        </label>
+        <label>
+          <input type="radio" name="" value="4" />
+          <span>Agree</span>
+        </label>
+        <label>
+          <input type="radio" name="" value="5" />
+          <span>Strongly Agree</span>
+        </label>
+      </div>
+    </li>
+  </template>
+
+  <template id="result-template">
+    <div style="margin-bottom: 1em; font-family: 'Open Sans', sans-serif">
+      <div style="margin-bottom: 3px">
+        <strong class="template-role"></strong>
+      </div>
+      <div style="background-color: #000">
+        <span class="template-match"
+          style="background-color: #070; color: #fff; padding: 3px; display: inline-block;"></span>
+      </div>
+    </div>
+  </template>
+
+  <script src="./survey-data.js"></script>
+  <script src="./survey.js"></script>
 
 </body>
 
