@@ -22,7 +22,7 @@ const resultsElement = document.getElementById("results");
 const resultHolder = document.getElementById("result-holder");
 const searchParams = new URLSearchParams(window.location.search);
 
-if (searchParams.has("results")) {
+if (searchParams.has("r")) {
   setupResults();
 } else {
   setupQuiz();
@@ -84,7 +84,7 @@ function setupQuiz() {
       };
     });
     const encoded = encodeSummary(summarizedResults);
-    window.location = `?results=${encodeURIComponent(encoded)}`;
+    window.location = `?r=${encodeURIComponent(encoded)}`;
   });
 }
 
@@ -100,12 +100,16 @@ function encodeSummary(summarizedResults) {
     });
     obj.results.push(Math.round(answer.score));
   }
-  const text = JSON.stringify(obj);
-  return btoa(text).replace(/=+$/, "");
+  const parts = [obj.id, obj.version].concat(obj.results);
+  const objString = parts.join(",");
+  return btoa(objString).replace(/=+$/, "");
 }
 
 function getRoleOrder(version) {
   const questions = orderedDatas.find((data) => data.version === version);
+  if (!questions) {
+    console.warn("Nothing found with version", version);
+  }
   const result = [];
   const seen = {};
   for (const question of questions.questions) {
@@ -118,13 +122,16 @@ function getRoleOrder(version) {
 }
 
 function decodeSummary(encoded) {
-  const obj = JSON.parse(atob(encoded));
-  const roles = getRoleOrder(obj.version);
+  const parts = atob(encoded).split(",");
+  const id = parts[0];
+  const version = parseInt(parts[1], 10);
+  const nums = parts.slice(2).map((num) => parseInt(num, 10));
+  const roles = getRoleOrder(version);
   const summarizedResults = [];
   for (let i = 0; i < roles.length; i++) {
     summarizedResults.push({
       role: roles[i],
-      score: obj.results[i],
+      score: nums[i],
     });
   }
   return summarizedResults;
@@ -132,7 +139,7 @@ function decodeSummary(encoded) {
 
 function setupResults() {
   document.querySelector("#results").style.display = "";
-  const summarizedResults = decodeSummary(searchParams.get("results"));
+  const summarizedResults = decodeSummary(searchParams.get("r"));
   summarizedResults.sort((a, b) => {
     return b.score - a.score;
   });
