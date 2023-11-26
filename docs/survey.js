@@ -1,7 +1,9 @@
 const RED = "#ff3131";
-const RED_RGB = [1, 0, .19, .19];
+const RED_RGB = [1, .19, .19];
 const GREEN = "#00bf63";
 const GREEN_RGB = [0, .66, .34];
+const YELLOW = "#fde047";
+const YELLOW_RGB = [1, .88, .28];
 const orderedDatas = window.orderedData;
 
 // Shuffle orderedData into a new array...
@@ -64,22 +66,49 @@ function setupQuiz() {
           if (input.checked) {
             label.classList.add("bg-gray-200");
             label.classList.remove("opacity-70");
+            toggleErrorOff(input);
           } else {
             label.classList.add("opacity-70");
             label.classList.remove("bg-gray-200");
           }
         });
+        selectNext(inputs[0]);
       });
     });
     questionText.textContent = question.descriptor;
     questions.appendChild(clone);
   });
 
+  function selectNext(input) {
+    const name = input.name;
+    const inputs = document.querySelectorAll(`input[type="radio"]`);
+    let found = false;
+    for (const input of inputs) {
+      if (found && input.name !== name) {
+        const otherInputs = Array.from(document.querySelectorAll(`input[name="${input.name}"]`));
+        if (otherInputs.find((input) => input.checked)) {
+          continue;
+        }
+        input.scrollIntoView({
+          block: "center",
+          behavior: "smooth",
+        });
+        break;
+      }
+      if (input.name === name && input.checked) {
+        found = true;
+      }
+    }
+  }
+
   for (const el of document.querySelectorAll(".question-count")) {
     el.textContent = sourceData.length;
   }
 
   submit.addEventListener("click", () => {
+    if (!checkInputs()) {
+      return;
+    }
     const answers = document.querySelectorAll("input:checked");
     const answerValues = Array.from(answers).map((answer) => {
       return {
@@ -107,6 +136,38 @@ function setupQuiz() {
     const encoded = encodeSummary(summarizedResults);
     window.location = `?r=${encodeURIComponent(encoded)}`;
   });
+}
+
+function toggleErrorOn(input) {
+  const container = input.closest(".individual-question");
+  container.classList.add("border-red-500");
+  container.classList.add("border-2");
+  console.log("c", container);
+}
+
+function toggleErrorOff(input) {
+  const container = input.closest(".individual-question");
+  container.classList.remove("border-red-500");
+  container.classList.remove("border-2");
+
+}
+
+function checkInputs() {
+  let i = 0;
+  while (true) {
+    const inputs = document.querySelectorAll(`input[name="question-${i}"]`);
+    if (!inputs.length) {
+      return true;
+    }
+    if (!Array.from(inputs).some((input) => input.checked)) {
+      inputs[0].scrollIntoView({
+        block: "center",
+      });
+      toggleErrorOn(inputs[0]);
+      return false;
+    }
+    i++;
+  }
 }
 
 function encodeSummary(summarizedResults) {
@@ -172,11 +233,21 @@ function setupResults() {
     match.style.width = `${result.score}%`;
     match.textContent = Math.round(result.score) + "%";
     resultHolder.appendChild(clone);
+    let red, green, blue;
     const p = result.score / 100;
-    const notp = 1 - p;
-    const red = (RED_RGB[0] * notp + GREEN_RGB[0] * p);
-    const green = (RED_RGB[1] * notp + GREEN_RGB[1] * p);
-    const blue = (RED_RGB[2] * notp + GREEN_RGB[2] * p);
+    if (result.score > 50) {
+      const p = (result.score - 50) / 50;
+      const notp = 1 - p;
+      red = (YELLOW_RGB[0] * notp + GREEN_RGB[0] * p);
+      green = (YELLOW_RGB[1] * notp + GREEN_RGB[1] * p);
+      blue = (YELLOW_RGB[2] * notp + GREEN_RGB[2] * p);
+    } else {
+      const p = result.score / 50;
+      const notp = 1 - p;
+      red = (RED_RGB[0] * notp + YELLOW_RGB[0] * p);
+      green = (RED_RGB[1] * notp + YELLOW_RGB[1] * p);
+      blue = (RED_RGB[2] * notp + YELLOW_RGB[2] * p);
+    }
     const color = `rgb(${red * 255}, ${green * 255}, ${blue * 255})`;
     match.style.backgroundColor = color;
   });
