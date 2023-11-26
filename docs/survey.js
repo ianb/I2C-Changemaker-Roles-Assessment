@@ -63,13 +63,16 @@ function setupQuiz() {
         const inputs = document.querySelectorAll(`input[name="${name}"]`);
         inputs.forEach((input) => {
           const label = input.parentNode;
+          const color = label.getAttribute("data-highlight");
           if (input.checked) {
-            label.classList.add("bg-gray-200");
-            label.classList.remove("opacity-70");
+            label.classList.remove(`bg-${color}-100`);
+            label.classList.add(`bg-${color}-400`);
+            label.classList.remove("opacity-50");
             toggleErrorOff(input);
           } else {
-            label.classList.add("opacity-70");
-            label.classList.remove("bg-gray-200");
+            label.classList.add(`bg-${color}-100`);
+            label.classList.remove(`bg-${color}-400`);
+            label.classList.add("opacity-50");
           }
         });
         selectNext(inputs[0]);
@@ -93,12 +96,16 @@ function setupQuiz() {
           block: "center",
           behavior: "smooth",
         });
-        break;
+        return;
       }
       if (input.name === name && input.checked) {
         found = true;
       }
     }
+    document.querySelector("#submit").scrollIntoView({
+      block: "center",
+      behavior: "smooth",
+    });
   }
 
   for (const el of document.querySelectorAll(".question-count")) {
