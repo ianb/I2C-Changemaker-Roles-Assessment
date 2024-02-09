@@ -128,6 +128,7 @@ function setupQuiz() {
         dir: parseInt(answer.getAttribute("data-dir"), 10),
       };
     });
+    sendGoogleSheetData(answerValues);
     const results = {};
     const roleCounts = {};
     answerValues.forEach((answer) => {
@@ -280,7 +281,10 @@ async function sendGoogleSheetData(data) {
     },
     body: JSON.stringify(data),
   });
-  if (!response.ok) throw new Error("Network response was not ok");
+  if (!response.ok) {
+    console.warn("Network response failed:", response);
+    throw new Error("Network response was not ok");
+  }
   const resp = response.json();
   console.log("Response from form submission:", resp);
   return resp;
