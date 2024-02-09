@@ -1,9 +1,9 @@
 const RED = "#ff3131";
-const RED_RGB = [1, .19, .19];
+const RED_RGB = [1, 0.19, 0.19];
 const GREEN = "#00bf63";
-const GREEN_RGB = [0, .66, .34];
+const GREEN_RGB = [0, 0.66, 0.34];
 const YELLOW = "#fde047";
-const YELLOW_RGB = [1, .88, .28];
+const YELLOW_RGB = [1, 0.88, 0.28];
 const orderedDatas = window.orderedData;
 
 // Shuffle orderedData into a new array...
@@ -57,6 +57,7 @@ function setupQuiz() {
     inputs.forEach((input) => {
       input.setAttribute("data-role", question.role);
       input.setAttribute("data-dir", question.dir);
+      input.setAttribute("data-question", question.descriptor);
       input.setAttribute("name", `question-${i}`);
       input.addEventListener("change", (event) => {
         const name = event.target.name;
@@ -88,7 +89,9 @@ function setupQuiz() {
     let found = false;
     for (const input of inputs) {
       if (found && input.name !== name) {
-        const otherInputs = Array.from(document.querySelectorAll(`input[name="${input.name}"]`));
+        const otherInputs = Array.from(
+          document.querySelectorAll(`input[name="${input.name}"]`)
+        );
         if (otherInputs.find((input) => input.checked)) {
           continue;
         }
@@ -121,6 +124,7 @@ function setupQuiz() {
       return {
         score: parseInt(answer.value, 10),
         role: answer.getAttribute("data-role"),
+        question: answer.getAttribute("data-question"),
         dir: parseInt(answer.getAttribute("data-dir"), 10),
       };
     });
@@ -130,14 +134,16 @@ function setupQuiz() {
       if (!results[answer.role]) {
         results[answer.role] = 0;
       }
-      const score = answer.dir === -1 ? numberOfOptions - answer.score : answer.score - 1;
+      const score =
+        answer.dir === -1 ? numberOfOptions - answer.score : answer.score - 1;
       results[answer.role] += score;
       roleCounts[answer.role] = (roleCounts[answer.role] || 0) + 1;
     });
     const summarizedResults = Object.keys(results).map((role) => {
       return {
         role,
-        score: (results[role] / roleCounts[role]) * (100 / (numberOfOptions - 1)),
+        score:
+          (results[role] / roleCounts[role]) * (100 / (numberOfOptions - 1)),
       };
     });
     const encoded = encodeSummary(summarizedResults);
@@ -156,7 +162,6 @@ function toggleErrorOff(input) {
   const container = input.closest(".individual-question");
   container.classList.remove("border-red-500");
   container.classList.remove("border-2");
-
 }
 
 function checkInputs() {
@@ -245,15 +250,15 @@ function setupResults() {
     if (result.score > 50) {
       const p = (result.score - 50) / 50;
       const notp = 1 - p;
-      red = (YELLOW_RGB[0] * notp + GREEN_RGB[0] * p);
-      green = (YELLOW_RGB[1] * notp + GREEN_RGB[1] * p);
-      blue = (YELLOW_RGB[2] * notp + GREEN_RGB[2] * p);
+      red = YELLOW_RGB[0] * notp + GREEN_RGB[0] * p;
+      green = YELLOW_RGB[1] * notp + GREEN_RGB[1] * p;
+      blue = YELLOW_RGB[2] * notp + GREEN_RGB[2] * p;
     } else {
       const p = result.score / 50;
       const notp = 1 - p;
-      red = (RED_RGB[0] * notp + YELLOW_RGB[0] * p);
-      green = (RED_RGB[1] * notp + YELLOW_RGB[1] * p);
-      blue = (RED_RGB[2] * notp + YELLOW_RGB[2] * p);
+      red = RED_RGB[0] * notp + YELLOW_RGB[0] * p;
+      green = RED_RGB[1] * notp + YELLOW_RGB[1] * p;
+      blue = RED_RGB[2] * notp + YELLOW_RGB[2] * p;
     }
     const color = `rgb(${red * 255}, ${green * 255}, ${blue * 255})`;
     match.style.backgroundColor = color;
@@ -261,4 +266,22 @@ function setupResults() {
   resultsElement.style.display = "";
   resultsElement.parentNode.scrollTop = 0;
   questions.parentNode.style.display = "none";
+}
+
+const GOOGLE_FORM_URL =
+  "https://script.google.com/macros/s/AKfycbxLBtTd3dHZl2oxt4EWG8O6mAh9uDzMGDSgB2iIc1Pz7Iyu3Z1MA3fU1hk6Jfukd_i9/exec";
+
+async function sendGoogleSheetData(data) {
+  const response = await fetch(GOOGLE_FORM_URL, {
+    method: "POST",
+    mode: "no-cors", // Since the request is cross-origin
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error("Network response was not ok");
+  const resp = response.json();
+  console.log("Response from form submission:", resp);
+  return resp;
 }
