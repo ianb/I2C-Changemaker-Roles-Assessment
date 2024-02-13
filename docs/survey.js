@@ -270,7 +270,7 @@ function setupResults() {
 }
 
 const GOOGLE_FORM_URL =
-  "https://script.google.com/macros/s/AKfycbxLBtTd3dHZl2oxt4EWG8O6mAh9uDzMGDSgB2iIc1Pz7Iyu3Z1MA3fU1hk6Jfukd_i9/exec";
+  "https://script.google.com/macros/s/AKfycbw1n2VbB0X_me0toiHmhugSI3tyd_imN4lSVX--EGqzvEtDhAnqg5YKUzE1z1TI9Vc_Xw/exec";
 
 async function sendGoogleSheetData(data) {
   const response = await fetch(GOOGLE_FORM_URL, {
