@@ -115,7 +115,7 @@ function setupQuiz() {
     el.textContent = sourceData.length;
   }
 
-  submit.addEventListener("click", () => {
+  submit.addEventListener("click", async () => {
     if (!checkInputs()) {
       return;
     }
@@ -128,7 +128,11 @@ function setupQuiz() {
         dir: parseInt(answer.getAttribute("data-dir"), 10),
       };
     });
-    sendGoogleSheetData(answerValues);
+    try {
+      await sendGoogleSheetData(answerValues);
+    } catch (e) {
+      console.warn("Failed to send data to Google Sheet", e);
+    }
     const results = {};
     const roleCounts = {};
     answerValues.forEach((answer) => {
