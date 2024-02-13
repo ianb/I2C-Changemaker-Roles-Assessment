@@ -279,11 +279,13 @@ async function sendGoogleSheetData(data) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({ submission: data }),
   });
   if (!response.ok) {
     console.warn("Network response failed:", response);
     throw new Error("Network response was not ok");
+  } else {
+    console.log("Form submission successful");
   }
   const resp = response.json();
   console.log("Response from form submission:", resp);
