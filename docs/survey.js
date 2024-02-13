@@ -285,13 +285,7 @@ async function sendGoogleSheetData(data) {
     },
     body: JSON.stringify({ submission: data }),
   });
-  if (!response.ok) {
-    console.warn("Network response failed:", response);
-    throw new Error("Network response was not ok");
-  } else {
-    console.log("Form submission successful");
-  }
-  const resp = response.json();
-  console.log("Response from form submission:", resp);
-  return resp;
+  // Status codes don't work for no-cors requests, so we can't check if the request was successful
+  console.log("Form submitted to the best of our knowledge");
+  return response;
 }
