@@ -152,7 +152,7 @@ function setupQuiz() {
       };
     });
     const encoded = encodeSummary(summarizedResults);
-    window.location = `?r=${encodeURIComponent(encoded)}`;
+    // window.location = `?r=${encodeURIComponent(encoded)}`;
   });
 }
 
