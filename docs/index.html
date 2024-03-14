@@ -162,6 +162,8 @@
 
         <ol id="questions"></ol>
 
+        <div id="demographics"></div>
+
         <div style="text-align: center">
           <button
             id="submit"
@@ -233,6 +235,12 @@
       </div>
     </div>
 
+    <div
+      id="demographic-questions"
+      class="mx-auto max-w-xl"
+      style="display: none"
+    ></div>
+
     <template id="question-template">
       <li class="mb-8 individual-question">
         <div class="mb-2">
@@ -277,6 +285,47 @@
           </label>
         </div>
       </li>
+    </template>
+
+    <template id="checkbox-template">
+      <div class="mb-4">
+        <b class="fill-question"></b>
+        <span> (choose all that apply)</span>
+        <div>
+          <label class="block hover:bg-blue-100 rounded mx-1 py-1 repeat-items">
+            <input type="checkbox" name="" value="" />
+            <span class="fill-value"></span>
+          </label>
+        </div>
+      </div>
+    </template>
+
+    <template id="select-template">
+      <div class="mb-4">
+        <b class="fill-question"></b>
+        <span> (select one)</span>
+        <div>
+          <label class="rounded mx-1 py-1">
+            <select class="rounded border-2 border-gray-300 bg-gray-100">
+              <option value=""></option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </template>
+
+    <template id="text-template">
+      <div class="mb-4">
+        <b class="fill-question"></b>
+        <div>
+          <input
+            class="w-full border-2 border-gray-300 rounded"
+            type="text"
+            name=""
+            value=""
+          />
+        </div>
+      </div>
     </template>
 
     <template id="result-template">

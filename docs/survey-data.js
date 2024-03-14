@@ -14,6 +14,74 @@ function parseData(s) {
   return result;
 }
 
+window.demographicQuestions = [
+  {
+    question: "Which of the following genders do you most identify with?",
+    type: "checkbox",
+    items: [
+      "Male",
+      "Female",
+      "Transgender",
+      "Trans",
+      "Androgyne",
+      "Bigender",
+      "Genderfluid",
+      "Nonbinary",
+      "Other",
+      "I prefer not to answer",
+    ],
+  },
+  {
+    question: "How do you identify your racial or ethnic background?",
+    type: "checkbox",
+    items: [
+      "Asian",
+      "Black or African American",
+      "Hispanic or Latino",
+      "Native American or Alaska Native",
+      "Native Hawaiian or Pacific Islander",
+      "White",
+      "Other",
+      "I prefer not to answer",
+    ],
+  },
+  {
+    question: "What country do you call home?",
+    type: "text",
+  },
+  {
+    question: "What is your primary language spoken at home?",
+    type: "text",
+  },
+  {
+    question: "What is your highest level of education completed?",
+    type: "select",
+    items: [
+      "Less than a high school diploma",
+      "High school diploma",
+      "Some college, No degree",
+      "Associate degree",
+      "Bachelor's degree",
+      "Master's degree",
+      "Doctorate degree",
+      "Professional degree",
+    ],
+  },
+  {
+    question: "Which of the following best describes your age? Select one.",
+    type: "select",
+    items: [
+      "Under 18",
+      "18 to 24",
+      "25 to 34",
+      "35 to 44",
+      "45 to 54",
+      "55 to 64",
+      "65 and over",
+    ],
+  },
+];
+
 window.orderedData = [
   {
     version: 1,
@@ -106,6 +174,6 @@ Connect individuals and communities to build stronger networks.	Weaver	1
 Integrate diverse elements into a cohesive whole.	Weaver	1
 Enrich the social fabric by deepening inclusivity and mutual support.	Weaver	1
 Facilitate engagements that reinforce community resilience and solidarity.	Weaver	1
-    `)
-  }
+    `),
+  },
 ];

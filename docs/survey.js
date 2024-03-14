@@ -83,6 +83,8 @@ function setupQuiz() {
     questions.appendChild(clone);
   });
 
+  createDemographicQuestions();
+
   function selectNext(input) {
     const name = input.name;
     const inputs = document.querySelectorAll(`input[type="radio"]`);
@@ -105,6 +107,7 @@ function setupQuiz() {
         found = true;
       }
     }
+
     document.querySelector("#submit").scrollIntoView({
       block: "center",
       behavior: "smooth",
@@ -122,16 +125,45 @@ function setupQuiz() {
       return;
     }
     const answers = document.querySelectorAll("input:checked");
-    const answerValues = Array.from(answers).map((answer) => {
-      return {
-        score: parseInt(answer.value, 10),
-        role: answer.getAttribute("data-role"),
-        question: answer.getAttribute("data-question"),
-        dir: parseInt(answer.getAttribute("data-dir"), 10),
-      };
-    });
+    const answerValues = Array.from(answers)
+      .map((answer) => {
+        if (!answer.getAttribute("data-role")) {
+          return null;
+        }
+        return {
+          score: parseInt(answer.value, 10),
+          role: answer.getAttribute("data-role"),
+          question: answer.getAttribute("data-question"),
+          dir: parseInt(answer.getAttribute("data-dir"), 10),
+        };
+      })
+      .filter((x) => x);
+    const demos = document.querySelectorAll("input[name^='demo:']");
+    const demoValues = Array.from(demos)
+      .map((demo) => {
+        const name = demo.name.split(":")[1];
+        if (demo.getAttribute("type") === "checkbox") {
+          if (demo.checked) {
+            return {
+              score: demo.value,
+              role: "demographics",
+              question: name,
+              dir: "",
+            };
+          }
+        } else {
+          return {
+            score: demo.value,
+            role: "demographics",
+            question: name,
+            dir: "",
+          };
+        }
+        return null;
+      })
+      .filter((x) => x);
     if (!_submitted) {
-      _submitted = sendGoogleSheetData(answerValues);
+      _submitted = sendGoogleSheetData(answerValues.concat(demoValues));
     }
     submit.textContent = "Submitting, please wait for your results...";
     const results = {};
@@ -156,6 +188,43 @@ function setupQuiz() {
     await _submitted;
     window.location = `?r=${encodeURIComponent(encoded)}`;
   });
+}
+
+function createDemographicQuestions() {
+  const questionsContainer = document.getElementById("demographics");
+  for (const question of window.demographicQuestions) {
+    const type = question.type;
+    const template = document.getElementById(`${type}-template`);
+    const node = template.content.cloneNode(true);
+    for (const el of node.querySelectorAll(".fill-question")) {
+      el.textContent = question.question;
+    }
+    if (type === "checkbox") {
+      const rep = node.querySelector(".repeat-items");
+      for (const item of question.items) {
+        const clone = rep.cloneNode(true);
+        clone.querySelector("input").name = `demo:${question.question}`;
+        clone.querySelector("input").value = item;
+        for (el of clone.querySelectorAll(".fill-value")) {
+          el.textContent = item;
+        }
+        rep.before(clone);
+      }
+      rep.remove();
+    } else if (type === "select") {
+      const select = node.querySelector("select");
+      select.name = `demo:${question.question}`;
+      for (const item of question.items) {
+        const option = document.createElement("option");
+        option.value = item;
+        option.textContent = item;
+        select.appendChild(option);
+      }
+    } else if (type === "text") {
+      node.querySelector("input").name = `demo:${question.question}`;
+    }
+    questionsContainer.appendChild(node);
+  }
 }
 
 function toggleErrorOn(input) {
