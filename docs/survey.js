@@ -164,8 +164,6 @@ function setupQuiz() {
         return null;
       })
       .filter((x) => x);
-    console.log("values are", demoValues);
-    return;
     if (!_submitted) {
       _submitted = sendGoogleSheetData(answerValues.concat(demoValues));
     }
