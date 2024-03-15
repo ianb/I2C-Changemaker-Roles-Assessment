@@ -138,7 +138,9 @@ function setupQuiz() {
         };
       })
       .filter((x) => x);
-    const demos = document.querySelectorAll("input[name^='demo:']");
+    const demos = document.querySelectorAll(
+      "input[name^='demo:'], select[name^='demo:']"
+    );
     const demoValues = Array.from(demos)
       .map((demo) => {
         const name = demo.name.split(":")[1];
